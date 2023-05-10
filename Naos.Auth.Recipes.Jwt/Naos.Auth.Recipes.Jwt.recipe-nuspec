@@ -1,5 +1,5 @@
-﻿<?xml version="1.0"?>
-<package >
+<?xml version="1.0"?>
+<package>
   <metadata>
     <id>Naos.Auth.Recipes.Jwt</id>
     <description>Tools for working Json Web Tokens (JWT).</description>
@@ -8,7 +8,7 @@
       <frameworkAssembly assemblyName="System.IdentityModel" targetFramework="net462" />
     </frameworkAssemblies>
     <dependencies>
-      <dependency id="Naos.CodeAnalysis.Recipes.SuppressBecause" version="1.0.124" />
+      <dependency id="Naos.CodeAnalysis.Recipes.SuppressBecause" version="1.0.129" />
       <dependency id="System.IdentityModel.Tokens.Jwt" version="4.0.2.206221351" />
     </dependencies>
   </metadata>
