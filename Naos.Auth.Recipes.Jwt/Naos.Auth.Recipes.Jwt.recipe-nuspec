@@ -13,6 +13,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="ManagedJwtSecurityTokenValidator.cs" target="content\net462\.recipes\Naos.Auth\ManagedJwtSecurityTokenValidator.cs" />
+    <file src="OpenIdConnectKeyResolver.cs" target="content\net462\.recipes\Naos.Auth\OpenIdConnectKeyResolver.cs" />
   </files>
 </package>
