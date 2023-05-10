@@ -6,6 +6,11 @@
 Example to setup JWT Authentication Validation in OWIN using .NET Framework.
 
 ```
+private const string Issuer = "https://myCompany.us.auth0.com/";
+
+// This has RSA Providers for the signing keys that need to stay in scope (i.e. not get disposed) to perform the validation.
+private static readonly OpenIdConnectKeyResolver resolver = new OpenIdConnectKeyResolver(Issuer, TimeSpan.FromHours(1));
+
 public static IAppBuilder UseJwtAuthentication(
     this IAppBuilder app)
 {
@@ -13,9 +18,6 @@ public static IAppBuilder UseJwtAuthentication(
                     {
                         "https://web.api.myCompany.com",
                     };
-
-    var issuer = "https://myCompany.us.auth0.com/";
-    var resolver = new OpenIdConnectKeyResolver(issuer, TimeSpan.Zero);
 
     var validationParameters = new TokenValidationParameters()
                             {
@@ -25,7 +27,7 @@ public static IAppBuilder UseJwtAuthentication(
                                 ValidateActor = true,
                                 ValidateIssuerSigningKey = true,
                                 ValidAudiences = audiences,
-                                ValidIssuer = issuer,
+                                ValidIssuer = Issuer,
                                 IssuerSigningKeyResolver = resolver.GetSigningKey,
                             };
 
