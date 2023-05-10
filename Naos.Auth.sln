@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Auth.Recipes.Jwt", "Naos.Auth.Recipes.Jwt\Naos.Auth.Recipes.Jwt.csproj", "{4BDDD1CE-C994-4A46-B6F1-8EFF93A9264F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Auth.Recipes.Jwt.Test", "Naos.Auth.Recipes.Jwt.Test\Naos.Auth.Recipes.Jwt.Test.csproj", "{EBF41451-8D0E-4564-9095-0F43CDA2D9A8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4BDDD1CE-C994-4A46-B6F1-8EFF93A9264F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BDDD1CE-C994-4A46-B6F1-8EFF93A9264F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BDDD1CE-C994-4A46-B6F1-8EFF93A9264F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BDDD1CE-C994-4A46-B6F1-8EFF93A9264F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBF41451-8D0E-4564-9095-0F43CDA2D9A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF41451-8D0E-4564-9095-0F43CDA2D9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF41451-8D0E-4564-9095-0F43CDA2D9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF41451-8D0E-4564-9095-0F43CDA2D9A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42E3BE0C-63D0-451D-B2BF-B147F17B2F62}
+	EndGlobalSection
+EndGlobal

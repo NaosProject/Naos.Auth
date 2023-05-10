@@ -1,0 +1,18 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Naos.Auth.Recipes.Jwt</id>
+    <description>Tools for working Json Web Tokens (JWT).</description>
+    <tags>JWT snippet codeinclude utility shared recipe Auth</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.IdentityModel" targetFramework="net462" />
+    </frameworkAssemblies>
+    <dependencies>
+      <dependency id="Naos.CodeAnalysis.Recipes.SuppressBecause" version="1.0.124" />
+      <dependency id="System.IdentityModel.Tokens.Jwt" version="4.0.2.206221351" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="ManagedJwtSecurityTokenValidator.cs" target="content\net462\.recipes\Naos.Auth\ManagedJwtSecurityTokenValidator.cs" />
+  </files>
+</package>
