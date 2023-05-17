@@ -19,6 +19,7 @@ namespace Naos.Auth.Recipes.Jwt
     using System.Net;
     using System.Security.Claims;
     using System.Security.Cryptography;
+    using System.Threading;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization.Json;
@@ -35,10 +36,12 @@ namespace Naos.Auth.Recipes.Jwt
 #endif
     sealed class OpenIdConnectKeyResolver : IDisposable
     {
+        private readonly object providerKeyTuplesSync = new object();
         private readonly ObcJsonSerializer serializer = new ObcJsonSerializer();
         private readonly string issuer;
         private readonly TimeSpan cachedKeysTimeToLive;
-        private readonly ConcurrentDictionary<string, Tuple<Key, RSA, SecurityKey>> providerKeyTuples = new ConcurrentDictionary<string, Tuple<Key, RSA, SecurityKey>>();
+        private readonly TimeSpan keysRequestTimeout;
+        private readonly Dictionary<string, Tuple<Key, RSA, SecurityKey>> providerKeyTuples = new Dictionary<string, Tuple<Key, RSA, SecurityKey>>();
         private DateTime providerKeyTuplesCacheExpiration;
 
         /// <summary>
@@ -46,14 +49,17 @@ namespace Naos.Auth.Recipes.Jwt
         /// </summary>
         /// <param name="issuer">The issuer/authority.</param>
         /// <param name="cachedKeysTimeToLive">The time to keep signing keys cached before re-fetching them from the <paramref name="issuer" />.</param>
+        /// <param name="keysRequestTimeout">The timeout for requesting the keys.</param>
         public OpenIdConnectKeyResolver(
             string issuer,
-            TimeSpan cachedKeysTimeToLive)
+            TimeSpan cachedKeysTimeToLive,
+            TimeSpan keysRequestTimeout)
         {
             issuer.MustForArg(nameof(issuer)).NotBeNullNorWhiteSpace();
 
             this.issuer = issuer;
             this.cachedKeysTimeToLive = cachedKeysTimeToLive;
+            this.keysRequestTimeout = keysRequestTimeout;
             this.providerKeyTuplesCacheExpiration = DateTime.UtcNow;
         }
 
@@ -87,13 +93,16 @@ namespace Naos.Auth.Recipes.Jwt
                      .SingleOrDefault(_ => _.Name == nameof(Key.Kid).ToLowerInvariant())
                     ?.Id;
 
-            if (kid != null && this.providerKeyTuples.TryGetValue(kid, out var result))
+            lock (this.providerKeyTuplesSync)
             {
-                return result.Item3;
-            }
-            else
-            {
-                return null;
+                if (kid != null && this.providerKeyTuples.TryGetValue(kid, out var result))
+                {
+                    return result.Item3;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -104,59 +113,65 @@ namespace Naos.Auth.Recipes.Jwt
         {
             if (DateTime.UtcNow > this.providerKeyTuplesCacheExpiration)
             {
-                var uri = new Uri(new Uri(this.issuer, UriKind.Absolute), ".well-known/jwks.json");
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
-                request.ContentType = "application/json";
-                request.Accept = "application/json";
-                request.Method = "GET";
-                request.Timeout = (int)TimeSpan.FromSeconds(1).TotalMilliseconds;
-                request.Headers.Add("Authorization", "bearer: " + token);
-                string jwkRaw = null;
-                using (var resp = request.GetResponse())
+                lock (this.providerKeyTuplesSync)
                 {
-                    var responseStream = resp.GetResponseStream();
-                    if (responseStream != null)
+                    if (DateTime.UtcNow > this.providerKeyTuplesCacheExpiration)
                     {
-                        using (var reader = new StreamReader(responseStream))
+
+                        var uri = new Uri(new Uri(this.issuer, UriKind.Absolute), ".well-known/jwks.json");
+                        HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
+                        request.ContentType = "application/json";
+                        request.Accept = "application/json";
+                        request.Method = "GET";
+                        request.Timeout = (int)this.keysRequestTimeout.TotalMilliseconds;
+                        request.Headers.Add("Authorization", "bearer: " + token);
+                        string jwkRaw = null;
+                        using (var resp = request.GetResponse())
                         {
-                            jwkRaw = reader.ReadToEnd();
+                            var responseStream = resp.GetResponseStream();
+                            if (responseStream != null)
+                            {
+                                using (var reader = new StreamReader(responseStream))
+                                {
+                                    jwkRaw = reader.ReadToEnd();
+                                }
+                            }
                         }
+
+                        var jwk = this.serializer.Deserialize<KeySet>(jwkRaw);
+
+                        var newProviderKeyTuples = jwk.Keys.Select(
+                                                           key =>
+                                                           {
+                                                               // Genius: https://stackoverflow.com/questions/40367279/rsasecuritykey-does-not-take-rsaparameters-as-arguments
+                                                               // var exampleXml = provider.ToXmlString(false);
+                                                               var provider = new RSACryptoServiceProvider(2048);
+                                                               var newN = Convert.ToBase64String(Base64UrlEncoder.DecodeBytes(key.N));
+                                                               var rsaXml =
+                                                                   $"<RSAKeyValue><Modulus>{newN}</Modulus><Exponent>{key.E}</Exponent></RSAKeyValue>";
+                                                               provider.FromXmlString(rsaXml);
+                                                               var issuerSigningKey = new RsaSecurityKey(provider);
+                                                               var tuple = new Tuple<Key, RSA, SecurityKey>(key, provider, issuerSigningKey);
+                                                               return tuple;
+                                                           })
+                                                      .ToList();
+
+                        foreach (var providerKeyTuple in this.providerKeyTuples)
+                        {
+                            providerKeyTuple.Value.Item2.Dispose();
+                        }
+
+                        this.providerKeyTuples.Clear();
+                        foreach (var newProviderKeyTuple in newProviderKeyTuples)
+                        {
+                            this.providerKeyTuples.Add(
+                                newProviderKeyTuple.Item1.Kid,
+                                newProviderKeyTuple);
+                        }
+
+                        this.providerKeyTuplesCacheExpiration = DateTime.UtcNow.Add(this.cachedKeysTimeToLive);
                     }
                 }
-
-                var jwk = this.serializer.Deserialize<KeySet>(jwkRaw);
-
-                var newProviderKeyTuples = jwk.Keys.Select(
-                                                   key =>
-                                                   {
-                                                       // Genius: https://stackoverflow.com/questions/40367279/rsasecuritykey-does-not-take-rsaparameters-as-arguments
-                                                       // var exampleXml = provider.ToXmlString(false);
-                                                       var provider = new RSACryptoServiceProvider(2048);
-                                                       var newN = Convert.ToBase64String(Base64UrlEncoder.DecodeBytes(key.N));
-                                                       var rsaXml =
-                                                           $"<RSAKeyValue><Modulus>{newN}</Modulus><Exponent>{key.E}</Exponent></RSAKeyValue>";
-                                                       provider.FromXmlString(rsaXml);
-                                                       var issuerSigningKey = new RsaSecurityKey(provider);
-                                                       var tuple = new Tuple<Key, RSA, SecurityKey>(key, provider, issuerSigningKey);
-                                                       return tuple;
-                                                   })
-                                              .ToList();
-
-                foreach (var newProviderKeyTuple in newProviderKeyTuples)
-                {
-                    this.providerKeyTuples.AddOrUpdate(
-                        newProviderKeyTuple.Item1.Kid,
-                        newProviderKeyTuple,
-                        (
-                            key,
-                            existing) =>
-                        {
-                            existing.Item2.Dispose();
-                            return newProviderKeyTuple;
-                        });
-                }
-
-                this.providerKeyTuplesCacheExpiration = DateTime.UtcNow.Add(this.cachedKeysTimeToLive);
             }
         }
 
