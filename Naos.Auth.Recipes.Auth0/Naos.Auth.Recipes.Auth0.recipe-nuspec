@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Naos.Auth.Recipes.Auth0</id>
+    <description>Tools for working Auth0 API.</description>
+    <tags>Auth0 snippet codeinclude utility shared recipe Auth</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Web" targetFramework="net462" />
+    </frameworkAssemblies>
+    <dependencies>
+      <dependency id="Naos.CodeAnalysis.Recipes.SuppressBecause" version="1.0.129" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Auth0PasswordAuthenticator.cs" target="content\net462\.recipes\Naos.Auth\Auth0PasswordAuthenticator.cs" />
+  </files>
+</package>
