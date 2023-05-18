@@ -11,7 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		LICENSE = LICENSE
+		Naos.Auth.sln.DotSettings = Naos.Auth.sln.DotSettings
 		README.md = README.md
+		RepoConfig.state = RepoConfig.state
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Auth.Recipes.Auth0", "Naos.Auth.Recipes.Auth0\Naos.Auth.Recipes.Auth0.csproj", "{9C1F1689-0872-42AA-BABC-A1316971F0CD}"

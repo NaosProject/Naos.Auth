@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <package>
   <metadata>
     <id>Naos.Auth.Recipes.Auth0</id>
@@ -6,9 +6,22 @@
     <tags>Auth0 snippet codeinclude utility shared recipe Auth</tags>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Web" targetFramework="net462" />
+      <frameworkAssembly assemblyName="System.Drawing" targetFramework="net462" />
     </frameworkAssemblies>
     <dependencies>
       <dependency id="Naos.CodeAnalysis.Recipes.SuppressBecause" version="1.0.129" />
+      <dependency id="OBeautifulCode.Assertion.Recipes.Must" version="1.0.34" />
+      <dependency id="OBeautifulCode.CodeAnalysis.Recipes.SuppressBecause" version="1.0.19" />
+      <dependency id="OBeautifulCode.Collection.Recipes.EnumerableExtensions" version="1.0.60" />
+      <dependency id="OBeautifulCode.Compression" version="1.0.26" />
+      <dependency id="OBeautifulCode.Equality.Recipes.EqualityHelpers" version="1.0.36" />
+      <dependency id="OBeautifulCode.Math.Recipes.ThreadSafeRandom" version="1.0.82" />
+      <dependency id="OBeautifulCode.Representation.System" version="1.0.63" />
+      <dependency id="OBeautifulCode.Serialization" version="1.0.140" />
+      <dependency id="OBeautifulCode.Serialization.Json" version="1.0.140" />
+      <dependency id="OBeautifulCode.String.Recipes.StringExtensions" version="1.0.61" />
+      <dependency id="OBeautifulCode.Type" version="1.0.119" />
+      <dependency id="OBeautifulCode.Type.Recipes.TypeExtensions" version="1.0.119" />
     </dependencies>
   </metadata>
   <files>
