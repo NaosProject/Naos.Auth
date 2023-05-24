@@ -195,7 +195,14 @@ namespace Naos.Auth.Recipes.Jwt
     /// <summary>
     /// Set of signing keys for JWK usage.
     /// </summary>
-    public class KeySet
+#if !NaosAuthSolution
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [System.CodeDom.Compiler.GeneratedCode("Naos.Auth.Recipes.Jwt", "See package version number")]
+    internal
+#else
+    public
+#endif
+    class KeySet
     {
         /// <summary>
         /// Gets or sets the signing keys.
@@ -206,7 +213,14 @@ namespace Naos.Auth.Recipes.Jwt
     /// <summary>
     /// Single signing key for JWK usage.
     /// </summary>
-    public class Key
+#if !NaosAuthSolution
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [System.CodeDom.Compiler.GeneratedCode("Naos.Auth.Recipes.Jwt", "See package version number")]
+    internal
+#else
+    public
+#endif
+        class Key
     {
         /// <summary>
         /// Gets or sets the algorithm.
