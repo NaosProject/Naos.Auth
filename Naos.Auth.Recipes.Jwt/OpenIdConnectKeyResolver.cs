@@ -117,8 +117,13 @@ namespace Naos.Auth.Recipes.Jwt
                 {
                     if (DateTime.UtcNow > this.providerKeyTuplesCacheExpiration)
                     {
+                        var baseUrl = this.issuer;
+                        if (!baseUrl.EndsWith("/", StringComparison.OrdinalIgnoreCase))
+                        {
+                            baseUrl = baseUrl + "/";
+                        }
 
-                        var uri = new Uri(new Uri(this.issuer, UriKind.Absolute), ".well-known/jwks.json");
+                        var uri = new Uri(baseUrl + ".well-known/jwks.json");
                         HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
                         request.ContentType = "application/json";
                         request.Accept = "application/json";
