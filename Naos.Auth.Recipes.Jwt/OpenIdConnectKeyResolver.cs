@@ -36,13 +36,18 @@ namespace Naos.Auth.Recipes.Jwt
 #endif
     sealed class OpenIdConnectKeyResolver : IDisposable
     {
+        private const long DO_FORCE_REFRESH = 1;
+        private const long DO_NOT_FORCE_REFRESH = 0;
         private readonly object providerKeyTuplesSync = new object();
         private readonly ObcJsonSerializer serializer = new ObcJsonSerializer();
         private readonly string issuer;
         private readonly TimeSpan cachedKeysTimeToLive;
         private readonly TimeSpan keysRequestTimeout;
+        private readonly int retryErrorsCount;
+        private readonly TimeSpan retryErrorWaitTime;
         private readonly Dictionary<string, Tuple<Key, RSA, SecurityKey>> providerKeyTuples = new Dictionary<string, Tuple<Key, RSA, SecurityKey>>();
         private DateTime providerKeyTuplesCacheExpiration;
+        private long shouldForceRefresh = DO_NOT_FORCE_REFRESH;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenIdConnectKeyResolver"/> class.
@@ -50,16 +55,23 @@ namespace Naos.Auth.Recipes.Jwt
         /// <param name="issuer">The issuer/authority.</param>
         /// <param name="cachedKeysTimeToLive">The time to keep signing keys cached before re-fetching them from the <paramref name="issuer" />.</param>
         /// <param name="keysRequestTimeout">The timeout for requesting the keys.</param>
+        /// <param name="retryErrorsCount">The number of times to retry errors.</param>
+        /// <param name="retryErrorWaitTime">The time to wait between errors when retrying.</param>
         public OpenIdConnectKeyResolver(
             string issuer,
             TimeSpan cachedKeysTimeToLive,
-            TimeSpan keysRequestTimeout)
+            TimeSpan keysRequestTimeout,
+            int retryErrorsCount,
+            TimeSpan retryErrorWaitTime)
         {
             issuer.MustForArg(nameof(issuer)).NotBeNullNorWhiteSpace();
+            retryErrorsCount.MustForArg(nameof(retryErrorsCount)).BeGreaterThanOrEqualTo(0);
 
             this.issuer = issuer;
             this.cachedKeysTimeToLive = cachedKeysTimeToLive;
             this.keysRequestTimeout = keysRequestTimeout;
+            this.retryErrorsCount = retryErrorsCount;
+            this.retryErrorWaitTime = retryErrorWaitTime;
             this.providerKeyTuplesCacheExpiration = DateTime.UtcNow;
         }
 
@@ -85,25 +97,56 @@ namespace Naos.Auth.Recipes.Jwt
                 throw new ArgumentNullException(nameof(keyIdentifier));
             }
 
-            this.RefreshProviderKeyTuplesIfNecessary(token);
+            SecurityKey result = null;
+            var attempts = this.retryErrorsCount + 1;
 
-            var kid = keyIdentifier
-                     .Where(_ => _ is NamedKeySecurityKeyIdentifierClause)
-                     .Cast<NamedKeySecurityKeyIdentifierClause>()
-                     .SingleOrDefault(_ => _.Name == nameof(Key.Kid).ToLowerInvariant())
-                    ?.Id;
-
-            lock (this.providerKeyTuplesSync)
+            while (result == null && attempts > 0)
             {
-                if (kid != null && this.providerKeyTuples.TryGetValue(kid, out var result))
+                attempts = attempts - 1;
+
+                try
                 {
-                    return result.Item3;
+                    this.RefreshProviderKeyTuplesIfNecessary(token);
+
+                    var kid = keyIdentifier
+                             .Where(_ => _ is NamedKeySecurityKeyIdentifierClause)
+                             .Cast<NamedKeySecurityKeyIdentifierClause>()
+                             .SingleOrDefault(_ => _.Name == nameof(Key.Kid).ToLowerInvariant())
+                            ?.Id;
+
+                    lock (this.providerKeyTuplesSync)
+                    {
+                        if (kid != null && this.providerKeyTuples.TryGetValue(kid, out var entry))
+                        {
+                            result = entry.Item3;
+                        }
+                        else
+                        {
+                            result = null;
+                        }
+                    }
+
+                    if (result == null)
+                    {
+                        Thread.Sleep(this.retryErrorsCount);
+                        Interlocked.Exchange(ref this.shouldForceRefresh, DO_FORCE_REFRESH);
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    return null;
+                    if (attempts == 0)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        Thread.Sleep(this.retryErrorWaitTime);
+                        Interlocked.Exchange(ref this.shouldForceRefresh, DO_FORCE_REFRESH);
+                    }
                 }
             }
+
+            return result;
         }
 
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
@@ -115,8 +158,10 @@ namespace Naos.Auth.Recipes.Jwt
             {
                 lock (this.providerKeyTuplesSync)
                 {
-                    if (DateTime.UtcNow > this.providerKeyTuplesCacheExpiration)
+                    var localShouldForceRefresh = Interlocked.Read(ref this.shouldForceRefresh);
+                    if (DateTime.UtcNow > this.providerKeyTuplesCacheExpiration || localShouldForceRefresh == DO_FORCE_REFRESH)
                     {
+                        Interlocked.Exchange(ref this.shouldForceRefresh, DO_NOT_FORCE_REFRESH);
                         var baseUrl = this.issuer;
                         if (!baseUrl.EndsWith("/", StringComparison.OrdinalIgnoreCase))
                         {
