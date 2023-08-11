@@ -44,7 +44,7 @@ namespace Naos.Auth.Recipes.Jwt.Test
 
             var issuer = "https://myCompany.us.auth0.com/";
 
-            using (var resolver = new OpenIdConnectKeyResolver(issuer, TimeSpan.Zero, TimeSpan.FromSeconds(10)))
+            using (var resolver = new OpenIdConnectKeyResolver(issuer, TimeSpan.Zero, TimeSpan.FromSeconds(10), 3, TimeSpan.Zero))
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -78,8 +78,7 @@ namespace Naos.Auth.Recipes.Jwt.Test
                             };
 
             var issuer = "https://myCompany.us.auth0.com/";
-
-            using (var resolver = new OpenIdConnectKeyResolver(issuer, TimeSpan.FromMilliseconds(10), TimeSpan.FromSeconds(10)))
+            using (var resolver = new OpenIdConnectKeyResolver(issuer, TimeSpan.FromMinutes(10), TimeSpan.FromSeconds(10), 3, TimeSpan.Zero))
             {
                 var validationParameters = new TokenValidationParameters()
                                            {
