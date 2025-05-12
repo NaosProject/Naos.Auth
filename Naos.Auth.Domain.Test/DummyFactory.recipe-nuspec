@@ -1,0 +1,18 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Naos.Auth.Recipes.DummyFactory</id>
+    <description>A Dummy Factory for types in Naos.Auth.Domain</description>
+    <tags>dummyfactory dummy factory fakeiteasy autofixture snippet codeinclude utility shared recipe Auth</tags>
+    <dependencies>
+        <dependency id="Naos.Auth.Domain" version="$version$" />
+        <dependency id="OBeautifulCode.AutoFakeItEasy" version ="1.0.126" />
+        <dependency id="Naos.CodeAnalysis.Recipes.SuppressBecause" version="1.0.6" />
+        <dependency id="Naos.Protocol.Recipes.DummyFactory" version="1.0.63" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="AuthDummyFactory.cs" target="content\net462\.recipes\Naos.Auth\AuthDummyFactory.cs" />
+    <file src="AuthDummyFactory.designer.cs" target="content\net462\.recipes\Naos.Auth\AuthDummyFactory.designer.cs" />
+  </files>
+</package>
