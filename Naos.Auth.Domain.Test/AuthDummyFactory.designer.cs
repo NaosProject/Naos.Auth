@@ -19,6 +19,7 @@ namespace Naos.Auth.Domain.Test
 
     using global::OBeautifulCode.AutoFakeItEasy;
     using global::OBeautifulCode.Math.Recipes;
+    using global::OBeautifulCode.Type;
 
     /// <summary>
     /// The default (code generated) Dummy Factory.
@@ -39,6 +40,11 @@ namespace Naos.Auth.Domain.Test
                 () => new OAuth2ClientCredentials(
                                  A.Dummy<string>(),
                                  A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new TokenInfo(
+                                 A.Dummy<string>(),
+                                 A.Dummy<UtcDateTimeRangeInclusive>()));
         }
 
         /// <inheritdoc />

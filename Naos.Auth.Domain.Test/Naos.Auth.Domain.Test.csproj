@@ -281,6 +281,10 @@
     </Compile>
     <Compile Include="AuthDummyFactoryTest.cs" />
     <AdditionalFiles Include=".analyzers\stylecop.json" />
+    <Compile Include="Models\Classes\TokenInfoTest.cs" />
+    <Compile Include="Models\Classes\TokenInfoTest.designer.cs">
+      <DependentUpon>TokenInfoTest.cs</DependentUpon>
+    </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />
     <None Include="packages.config" />
