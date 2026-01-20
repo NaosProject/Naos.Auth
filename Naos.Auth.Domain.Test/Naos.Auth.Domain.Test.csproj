@@ -270,6 +270,10 @@
     <Compile Include="Models\Classes\OAuth2ClientCredentialsTest.designer.cs">
       <DependentUpon>OAuth2ClientCredentialsTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\OAuth2InitiationTest.cs" />
+    <Compile Include="Models\Classes\OAuth2InitiationTest.designer.cs">
+      <DependentUpon>OAuth2InitiationTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\GlobalSuppressions.cs" />
