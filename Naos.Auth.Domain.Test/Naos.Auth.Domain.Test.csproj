@@ -266,6 +266,10 @@
       <DependentUpon>AuthDummyFactoryTest.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
+    <Compile Include="Operations\GetOAuth2InitiationOpTest.cs" />
+    <Compile Include="Operations\GetOAuth2InitiationOpTest.designer.cs">
+      <DependentUpon>GetOAuth2InitiationOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Classes\OAuth2ClientCredentialsTest.cs" />
     <Compile Include="Models\Classes\OAuth2ClientCredentialsTest.designer.cs">
       <DependentUpon>OAuth2ClientCredentialsTest.cs</DependentUpon>
@@ -319,6 +323,7 @@
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

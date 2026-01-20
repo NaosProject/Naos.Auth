@@ -37,6 +37,10 @@ namespace Naos.Auth.Domain.Test
         public DefaultAuthDummyFactory()
         {
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetOAuth2InitiationOp(
+                                 A.Dummy<OAuth2ConnectionInfo>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new OAuth2ClientCredentials(
                                  A.Dummy<string>(),
                                  A.Dummy<string>()));
