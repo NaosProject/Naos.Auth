@@ -27,8 +27,23 @@ namespace Naos.Auth.Domain
         Confirmed,
 
         /// <summary>
-        /// The token was denied.
+        /// The token was denied by the provider.
         /// </summary>
+        /// <remarks>
+        /// The provider rejected the token (e.g., invalid_grant).
+        /// The specific reason may not be known—could be revocation at the provider,
+        /// expiration, or other invalidation.
+        /// </remarks>
         Denied,
+
+        /// <summary>
+        /// The token is known to have been revoked.
+        /// </summary>
+        /// <remarks>
+        /// This state most likely captures a user performing a revocation via the application,
+        /// versus it being revoked with the provider that the application is accessing
+        /// (providers likely wouldn't communicate that the token is revoked, the token would just be denied).
+        /// </remarks>
+        Revoked,
     }
 }
