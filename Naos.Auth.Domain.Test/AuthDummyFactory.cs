@@ -27,7 +27,7 @@ namespace Naos.Auth.Domain.Test
     {
         public AuthDummyFactory()
         {
-            /* Add any overriding or custom registrations here. */
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(TokenAuthorizationState.Unknown);
         }
     }
 }
