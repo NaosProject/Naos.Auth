@@ -7,7 +7,6 @@
 namespace Naos.Auth.Domain
 {
     using System.Diagnostics.CodeAnalysis;
-    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
@@ -26,7 +25,6 @@ namespace Naos.Auth.Domain
         /// and correlating requests when handling the authorization callback.
         /// </param>
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "0#", Justification = "Prefer URIs as strings.")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "csrf", Justification = NaosSuppressBecause.CA1704_IdentifiersShouldBeSpelledCorrectly_SpellingIsCorrectInContextOfTheDomain)]
         public OAuth2Initiation(
             string authorizationUrl,
             string state)
@@ -48,7 +46,6 @@ namespace Naos.Auth.Domain
         /// Gets the state value for validating against CSRF (cross-site request forgery) attacks
         /// and correlating requests when handling the authorization callback.
         /// </summary>
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Csrf", Justification = NaosSuppressBecause.CA1704_IdentifiersShouldBeSpelledCorrectly_SpellingIsCorrectInContextOfTheDomain)]
         public string State { get; private set; }
     }
 }

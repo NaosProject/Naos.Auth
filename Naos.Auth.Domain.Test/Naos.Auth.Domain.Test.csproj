@@ -201,6 +201,7 @@
     <Compile Include=".recipes\OBeautifulCode.Compression\CompressorFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Compression\DotNetZipCompressor.cs" />
     <Compile Include=".recipes\OBeautifulCode.Compression\NullCompressor.cs" />
+    <Compile Include=".recipes\OBeautifulCode.DateTime\DateTimeExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Enum\EnumExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\ByteArrayEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\ColorEqualityComparer.cs" />
@@ -266,6 +267,10 @@
       <DependentUpon>AuthDummyFactoryTest.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
+    <Compile Include="Events\GetOAuth2InitiationOpExecutedEventTest.cs" />
+    <Compile Include="Events\GetOAuth2InitiationOpExecutedEventTest.designer.cs">
+      <DependentUpon>GetOAuth2InitiationOpExecutedEventTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\GetOAuth2InitiationOpTest.cs" />
     <Compile Include="Operations\GetOAuth2InitiationOpTest.designer.cs">
       <DependentUpon>GetOAuth2InitiationOpTest.cs</DependentUpon>
