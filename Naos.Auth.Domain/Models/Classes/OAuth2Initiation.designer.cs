@@ -70,7 +70,7 @@ namespace Naos.Auth.Domain
             }
 
             var result = this.AuthorizationUrl.IsEqualTo(other.AuthorizationUrl, StringComparer.Ordinal)
-                      && this.CsrfValidationState.IsEqualTo(other.CsrfValidationState, StringComparer.Ordinal);
+                      && this.State.IsEqualTo(other.State, StringComparer.Ordinal);
 
             return result;
         }
@@ -81,7 +81,7 @@ namespace Naos.Auth.Domain
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.AuthorizationUrl)
-            .Hash(this.CsrfValidationState)
+            .Hash(this.State)
             .Value;
 
         /// <inheritdoc />
@@ -92,7 +92,7 @@ namespace Naos.Auth.Domain
         {
             var result = new OAuth2Initiation(
                                  this.AuthorizationUrl?.DeepClone(),
-                                 this.CsrfValidationState?.DeepClone());
+                                 this.State?.DeepClone());
 
             return result;
         }
@@ -123,16 +123,16 @@ namespace Naos.Auth.Domain
         {
             var result = new OAuth2Initiation(
                                  authorizationUrl,
-                                 this.CsrfValidationState?.DeepClone());
+                                 this.State?.DeepClone());
 
             return result;
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="CsrfValidationState" />.
+        /// Deep clones this object with a new <see cref="State" />.
         /// </summary>
-        /// <param name="csrfValidationState">The new <see cref="CsrfValidationState" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="OAuth2Initiation" /> using the specified <paramref name="csrfValidationState" /> for <see cref="CsrfValidationState" /> and a deep clone of every other property.</returns>
+        /// <param name="state">The new <see cref="State" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="OAuth2Initiation" /> using the specified <paramref name="state" /> for <see cref="State" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -150,11 +150,11 @@ namespace Naos.Auth.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public OAuth2Initiation DeepCloneWithCsrfValidationState(string csrfValidationState)
+        public OAuth2Initiation DeepCloneWithState(string state)
         {
             var result = new OAuth2Initiation(
                                  this.AuthorizationUrl?.DeepClone(),
-                                 csrfValidationState);
+                                 state);
 
             return result;
         }
@@ -163,7 +163,7 @@ namespace Naos.Auth.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Auth.Domain.OAuth2Initiation: AuthorizationUrl = {this.AuthorizationUrl?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, CsrfValidationState = {this.CsrfValidationState?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Auth.Domain.OAuth2Initiation: AuthorizationUrl = {this.AuthorizationUrl?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, State = {this.State?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }
@@ -216,7 +216,7 @@ namespace Naos.Auth.Domain
                     return;
                 }
 
-                localValidationFailures = ValidatableExtensions.GetValidationFailures(this.CsrfValidationState, options, propertyPathTracker, nameof(this.CsrfValidationState));
+                localValidationFailures = ValidatableExtensions.GetValidationFailures(this.State, options, propertyPathTracker, nameof(this.State));
                 result.AddRange(localValidationFailures);
                 if (stopOnFirstObjectWithFailures && result.Any())
                 {

@@ -48,7 +48,7 @@ namespace Naos.Auth.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<OAuth2Initiation>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Auth.Domain.OAuth2Initiation: AuthorizationUrl = {systemUnderTest.AuthorizationUrl?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, CsrfValidationState = {systemUnderTest.CsrfValidationState?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Auth.Domain.OAuth2Initiation: AuthorizationUrl = {systemUnderTest.AuthorizationUrl?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, State = {systemUnderTest.State?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -66,7 +66,7 @@ namespace Naos.Auth.Domain.Test
 
                         var result = new OAuth2Initiation(
                                              null,
-                                             referenceObject.CsrfValidationState);
+                                             referenceObject.State);
 
                         return result;
                     },
@@ -83,7 +83,7 @@ namespace Naos.Auth.Domain.Test
 
                         var result = new OAuth2Initiation(
                                              Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.CsrfValidationState);
+                                             referenceObject.State);
 
                         return result;
                     },
@@ -93,7 +93,7 @@ namespace Naos.Auth.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<OAuth2Initiation>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'csrfValidationState' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'state' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<OAuth2Initiation>();
@@ -105,12 +105,12 @@ namespace Naos.Auth.Domain.Test
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "csrfValidationState", },
+                    ExpectedExceptionMessageContains = new[] { "state", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<OAuth2Initiation>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'csrfValidationState' is white space scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'state' is white space scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<OAuth2Initiation>();
@@ -122,7 +122,7 @@ namespace Naos.Auth.Domain.Test
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "csrfValidationState", "white space", },
+                    ExpectedExceptionMessageContains = new[] { "state", "white space", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<OAuth2Initiation> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<OAuth2Initiation>()
@@ -138,7 +138,7 @@ namespace Naos.Auth.Domain.Test
                         {
                             SystemUnderTest = new OAuth2Initiation(
                                                       referenceObject.AuthorizationUrl,
-                                                      referenceObject.CsrfValidationState),
+                                                      referenceObject.State),
                             ExpectedPropertyValue = referenceObject.AuthorizationUrl,
                         };
 
@@ -149,7 +149,7 @@ namespace Naos.Auth.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<OAuth2Initiation>
                 {
-                    Name = "CsrfValidationState should return same 'csrfValidationState' parameter passed to constructor when getting",
+                    Name = "State should return same 'state' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<OAuth2Initiation>();
@@ -158,13 +158,13 @@ namespace Naos.Auth.Domain.Test
                         {
                             SystemUnderTest = new OAuth2Initiation(
                                                       referenceObject.AuthorizationUrl,
-                                                      referenceObject.CsrfValidationState),
-                            ExpectedPropertyValue = referenceObject.CsrfValidationState,
+                                                      referenceObject.State),
+                            ExpectedPropertyValue = referenceObject.State,
                         };
 
                         return result;
                     },
-                    PropertyName = "CsrfValidationState",
+                    PropertyName = "State",
                 });
 
         private static readonly DeepCloneWithTestScenarios<OAuth2Initiation> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<OAuth2Initiation>()
@@ -191,18 +191,18 @@ namespace Naos.Auth.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<OAuth2Initiation>
                 {
-                    Name = "DeepCloneWithCsrfValidationState should deep clone object and replace CsrfValidationState with the provided csrfValidationState",
-                    WithPropertyName = "CsrfValidationState",
+                    Name = "DeepCloneWithState should deep clone object and replace State with the provided state",
+                    WithPropertyName = "State",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<OAuth2Initiation>();
 
-                        var referenceObject = A.Dummy<OAuth2Initiation>().ThatIs(_ => !systemUnderTest.CsrfValidationState.IsEqualTo(_.CsrfValidationState));
+                        var referenceObject = A.Dummy<OAuth2Initiation>().ThatIs(_ => !systemUnderTest.State.IsEqualTo(_.State));
 
                         var result = new SystemUnderTestDeepCloneWithValue<OAuth2Initiation>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.CsrfValidationState,
+                            DeepCloneWithValue = referenceObject.State,
                         };
 
                         return result;
@@ -221,16 +221,16 @@ namespace Naos.Auth.Domain.Test
                     {
                         new OAuth2Initiation(
                                 ReferenceObjectForEquatableTestScenarios.AuthorizationUrl,
-                                ReferenceObjectForEquatableTestScenarios.CsrfValidationState),
+                                ReferenceObjectForEquatableTestScenarios.State),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new OAuth2Initiation[]
                     {
                         new OAuth2Initiation(
                                 A.Dummy<OAuth2Initiation>().Whose(_ => !_.AuthorizationUrl.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AuthorizationUrl)).AuthorizationUrl,
-                                ReferenceObjectForEquatableTestScenarios.CsrfValidationState),
+                                ReferenceObjectForEquatableTestScenarios.State),
                         new OAuth2Initiation(
                                 ReferenceObjectForEquatableTestScenarios.AuthorizationUrl,
-                                A.Dummy<OAuth2Initiation>().Whose(_ => !_.CsrfValidationState.IsEqualTo(ReferenceObjectForEquatableTestScenarios.CsrfValidationState)).CsrfValidationState),
+                                A.Dummy<OAuth2Initiation>().Whose(_ => !_.State.IsEqualTo(ReferenceObjectForEquatableTestScenarios.State)).State),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -537,7 +537,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "AuthorizationUrl", "CsrfValidationState" };
+                var propertyNames = new string[] { "AuthorizationUrl", "State" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

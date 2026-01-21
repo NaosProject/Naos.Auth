@@ -13,7 +13,7 @@ namespace Naos.Auth.Domain
 
     /// <summary>
     /// Represents the initial data required to begin an OAuth 2.0 authorization code flow,
-    /// including the authorization URL and state for CSRF validation.
+    /// including the authorization URL and state for CSRF validation and request correlation.
     /// </summary>
     public partial class OAuth2Initiation : IModelViaCodeGen
     {
@@ -21,21 +21,21 @@ namespace Naos.Auth.Domain
         /// Initializes a new instance of the <see cref="OAuth2Initiation"/> class.
         /// </summary>
         /// <param name="authorizationUrl">The URL to redirect the user to for authorization.</param>
-        /// <param name="csrfValidationState">
-        /// The state value to validate against CSRF (cross-site request forgery) attacks
-        /// when handling the authorization callback.
+        /// <param name="state">
+        /// The state value for validating against CSRF (cross-site request forgery) attacks
+        /// and correlating requests when handling the authorization callback.
         /// </param>
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", MessageId = "0#", Justification = "Prefer URIs as strings.")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "csrf", Justification = NaosSuppressBecause.CA1704_IdentifiersShouldBeSpelledCorrectly_SpellingIsCorrectInContextOfTheDomain)]
         public OAuth2Initiation(
             string authorizationUrl,
-            string csrfValidationState)
+            string state)
         {
             new { authorizationUrl }.AsArg().Must().NotBeNullNorWhiteSpace();
-            new { csrfValidationState }.AsArg().Must().NotBeNullNorWhiteSpace();
+            new { state }.AsArg().Must().NotBeNullNorWhiteSpace();
 
             this.AuthorizationUrl = authorizationUrl;
-            this.CsrfValidationState = csrfValidationState;
+            this.State = state;
         }
 
         /// <summary>
@@ -45,10 +45,10 @@ namespace Naos.Auth.Domain
         public string AuthorizationUrl { get; private set; }
 
         /// <summary>
-        /// Gets the state value to validate against CSRF (cross-site request forgery) attacks
-        /// when handling the authorization callback.
+        /// Gets the state value for validating against CSRF (cross-site request forgery) attacks
+        /// and correlating requests when handling the authorization callback.
         /// </summary>
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Csrf", Justification = NaosSuppressBecause.CA1704_IdentifiersShouldBeSpelledCorrectly_SpellingIsCorrectInContextOfTheDomain)]
-        public string CsrfValidationState { get; private set; }
+        public string State { get; private set; }
     }
 }
