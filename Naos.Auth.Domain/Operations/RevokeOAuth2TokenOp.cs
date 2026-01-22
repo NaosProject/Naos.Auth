@@ -17,7 +17,7 @@ namespace Naos.Auth.Domain
     /// the provider because you can no longer get an access token.  Also, revoking a refresh token might
     /// also revoke any active access tokens.
     /// </remarks>
-    public partial class RevokeOAuth2TokenOp : ReturningOperationBase<OAuth2TokenPair>
+    public partial class RevokeOAuth2TokenOp : VoidOperationBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RevokeOAuth2TokenOp"/> class.
