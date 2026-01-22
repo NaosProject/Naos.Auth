@@ -295,9 +295,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
-    <Compile Include="Events\RefreshOAuth2TokenPairOpTest.cs" />
-    <Compile Include="Events\RefreshOAuth2TokenPairOpTest.designer.cs">
+    <Compile Include="Operations\RefreshOAuth2TokenPairOpTest.cs" />
+    <Compile Include="Operations\RefreshOAuth2TokenPairOpTest.designer.cs">
       <DependentUpon>RefreshOAuth2TokenPairOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\RevokeOAuth2TokenOpTest.cs" />
+    <Compile Include="Operations\RevokeOAuth2TokenOpTest.designer.cs">
+      <DependentUpon>RevokeOAuth2TokenOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="SerializationConfigurationTypes.cs" />
     <Compile Include="AuthDummyFactory.cs" />

@@ -34,77 +34,118 @@ namespace Naos.Auth.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class GetOAuth2InitiationOpTest
+    public static partial class RefreshOAuth2TokenPairOpTest
     {
-        private static readonly StringRepresentationTestScenarios<GetOAuth2InitiationOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly StringRepresentationTestScenarios<RefreshOAuth2TokenPairOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<RefreshOAuth2TokenPairOp>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<GetOAuth2InitiationOp>
+                new StringRepresentationTestScenario<RefreshOAuth2TokenPairOp>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetOAuth2InitiationOp>();
+                        var systemUnderTest = A.Dummy<RefreshOAuth2TokenPairOp>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<GetOAuth2InitiationOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<RefreshOAuth2TokenPairOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Auth.Domain.GetOAuth2InitiationOp: ConnectionInfo = {systemUnderTest.ConnectionInfo?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Auth.Domain.RefreshOAuth2TokenPairOp: ConnectionInfo = {systemUnderTest.ConnectionInfo?.ToString() ?? "<null>"}, RefreshToken = {systemUnderTest.RefreshToken?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<GetOAuth2InitiationOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<RefreshOAuth2TokenPairOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<RefreshOAuth2TokenPairOp>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetOAuth2InitiationOp>
+                new ConstructorArgumentValidationTestScenario<RefreshOAuth2TokenPairOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'connectionInfo' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var result = new GetOAuth2InitiationOp(
-                                             null);
+                        var referenceObject = A.Dummy<RefreshOAuth2TokenPairOp>();
+
+                        var result = new RefreshOAuth2TokenPairOp(
+                                             null,
+                                             referenceObject.RefreshToken);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
                     ExpectedExceptionMessageContains = new[] { "connectionInfo", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<RefreshOAuth2TokenPairOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'refreshToken' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<RefreshOAuth2TokenPairOp>();
+
+                        var result = new RefreshOAuth2TokenPairOp(
+                                             referenceObject.ConnectionInfo,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "refreshToken", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<GetOAuth2InitiationOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<RefreshOAuth2TokenPairOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<RefreshOAuth2TokenPairOp>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetOAuth2InitiationOp>
+                new ConstructorPropertyAssignmentTestScenario<RefreshOAuth2TokenPairOp>
                 {
                     Name = "ConnectionInfo should return same 'connectionInfo' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<GetOAuth2InitiationOp>();
+                        var referenceObject = A.Dummy<RefreshOAuth2TokenPairOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<GetOAuth2InitiationOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<RefreshOAuth2TokenPairOp>
                         {
-                            SystemUnderTest = new GetOAuth2InitiationOp(
-                                                      referenceObject.ConnectionInfo),
+                            SystemUnderTest = new RefreshOAuth2TokenPairOp(
+                                                      referenceObject.ConnectionInfo,
+                                                      referenceObject.RefreshToken),
                             ExpectedPropertyValue = referenceObject.ConnectionInfo,
                         };
 
                         return result;
                     },
                     PropertyName = "ConnectionInfo",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<RefreshOAuth2TokenPairOp>
+                {
+                    Name = "RefreshToken should return same 'refreshToken' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<RefreshOAuth2TokenPairOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<RefreshOAuth2TokenPairOp>
+                        {
+                            SystemUnderTest = new RefreshOAuth2TokenPairOp(
+                                                      referenceObject.ConnectionInfo,
+                                                      referenceObject.RefreshToken),
+                            ExpectedPropertyValue = referenceObject.RefreshToken,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "RefreshToken",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<GetOAuth2InitiationOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly DeepCloneWithTestScenarios<RefreshOAuth2TokenPairOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<RefreshOAuth2TokenPairOp>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetOAuth2InitiationOp>
+                new DeepCloneWithTestScenario<RefreshOAuth2TokenPairOp>
                 {
                     Name = "DeepCloneWithConnectionInfo should deep clone object and replace ConnectionInfo with the provided connectionInfo",
                     WithPropertyName = "ConnectionInfo",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetOAuth2InitiationOp>();
+                        var systemUnderTest = A.Dummy<RefreshOAuth2TokenPairOp>();
 
-                        var referenceObject = A.Dummy<GetOAuth2InitiationOp>().ThatIs(_ => !systemUnderTest.ConnectionInfo.IsEqualTo(_.ConnectionInfo));
+                        var referenceObject = A.Dummy<RefreshOAuth2TokenPairOp>().ThatIs(_ => !systemUnderTest.ConnectionInfo.IsEqualTo(_.ConnectionInfo));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<GetOAuth2InitiationOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<RefreshOAuth2TokenPairOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.ConnectionInfo,
@@ -112,25 +153,50 @@ namespace Naos.Auth.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<RefreshOAuth2TokenPairOp>
+                {
+                    Name = "DeepCloneWithRefreshToken should deep clone object and replace RefreshToken with the provided refreshToken",
+                    WithPropertyName = "RefreshToken",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<RefreshOAuth2TokenPairOp>();
+
+                        var referenceObject = A.Dummy<RefreshOAuth2TokenPairOp>().ThatIs(_ => !systemUnderTest.RefreshToken.IsEqualTo(_.RefreshToken));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<RefreshOAuth2TokenPairOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.RefreshToken,
+                        };
+
+                        return result;
+                    },
                 });
 
-        private static readonly GetOAuth2InitiationOp ReferenceObjectForEquatableTestScenarios = A.Dummy<GetOAuth2InitiationOp>();
+        private static readonly RefreshOAuth2TokenPairOp ReferenceObjectForEquatableTestScenarios = A.Dummy<RefreshOAuth2TokenPairOp>();
 
-        private static readonly EquatableTestScenarios<GetOAuth2InitiationOp> EquatableTestScenarios = new EquatableTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly EquatableTestScenarios<RefreshOAuth2TokenPairOp> EquatableTestScenarios = new EquatableTestScenarios<RefreshOAuth2TokenPairOp>()
             .AddScenario(() =>
-                new EquatableTestScenario<GetOAuth2InitiationOp>
+                new EquatableTestScenario<RefreshOAuth2TokenPairOp>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetOAuth2InitiationOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new RefreshOAuth2TokenPairOp[]
                     {
-                        new GetOAuth2InitiationOp(
-                                ReferenceObjectForEquatableTestScenarios.ConnectionInfo),
+                        new RefreshOAuth2TokenPairOp(
+                                ReferenceObjectForEquatableTestScenarios.ConnectionInfo,
+                                ReferenceObjectForEquatableTestScenarios.RefreshToken),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new GetOAuth2InitiationOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new RefreshOAuth2TokenPairOp[]
                     {
-                        new GetOAuth2InitiationOp(
-                                A.Dummy<GetOAuth2InitiationOp>().Whose(_ => !_.ConnectionInfo.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ConnectionInfo)).ConnectionInfo),
+                        new RefreshOAuth2TokenPairOp(
+                                A.Dummy<RefreshOAuth2TokenPairOp>().Whose(_ => !_.ConnectionInfo.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ConnectionInfo)).ConnectionInfo,
+                                ReferenceObjectForEquatableTestScenarios.RefreshToken),
+                        new RefreshOAuth2TokenPairOp(
+                                ReferenceObjectForEquatableTestScenarios.ConnectionInfo,
+                                A.Dummy<RefreshOAuth2TokenPairOp>().Whose(_ => !_.RefreshToken.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RefreshToken)).RefreshToken),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -139,17 +205,17 @@ namespace Naos.Auth.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<RefreshOAuth2TokenPairOp>(),
+                        A.Dummy<GetOAuth2InitiationOp>(),
                         A.Dummy<RevokeOAuth2TokenOp>(),
                     },
                 });
 
-        private static readonly ValidModelTestScenarios<GetOAuth2InitiationOp> ValidModelTestScenarios = new ValidModelTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly ValidModelTestScenarios<RefreshOAuth2TokenPairOp> ValidModelTestScenarios = new ValidModelTestScenarios<RefreshOAuth2TokenPairOp>()
             .AddScenario(() =>
-                new ValidModelTestScenario<GetOAuth2InitiationOp>
+                new ValidModelTestScenario<RefreshOAuth2TokenPairOp>
                 {
-                    Name = "a dummy GetOAuth2InitiationOp should be valid",
-                    SystemUnderTest = A.Dummy<GetOAuth2InitiationOp>(),
+                    Name = "a dummy RefreshOAuth2TokenPairOp should be valid",
+                    SystemUnderTest = A.Dummy<RefreshOAuth2TokenPairOp>(),
                 });
 
         [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
@@ -170,12 +236,12 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void GetOAuth2InitiationOp___Should_implement_IModel_of_GetOAuth2InitiationOp___When_reflecting()
+            public static void RefreshOAuth2TokenPairOp___Should_implement_IModel_of_RefreshOAuth2TokenPairOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(GetOAuth2InitiationOp);
+                var type = typeof(RefreshOAuth2TokenPairOp);
 
-                var expectedModelMethods = typeof(IModel<GetOAuth2InitiationOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<RefreshOAuth2TokenPairOp>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -185,7 +251,7 @@ namespace Naos.Auth.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetOAuth2InitiationOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<RefreshOAuth2TokenPairOp>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -203,10 +269,10 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void GetOAuth2InitiationOp___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void RefreshOAuth2TokenPairOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(GetOAuth2InitiationOp);
+                var type = typeof(RefreshOAuth2TokenPairOp);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -386,10 +452,10 @@ namespace Naos.Auth.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<GetOAuth2InitiationOp>();
+                var systemUnderTest = A.Dummy<RefreshOAuth2TokenPairOp>();
 
                 // Act
-                var actual = (GetOAuth2InitiationOp)systemUnderTest.Clone();
+                var actual = (RefreshOAuth2TokenPairOp)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -413,7 +479,7 @@ namespace Naos.Auth.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<GetOAuth2InitiationOp>();
+                var systemUnderTest = A.Dummy<RefreshOAuth2TokenPairOp>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -433,6 +499,18 @@ namespace Naos.Auth.Domain.Test
                     // a deep clone of a value type object is the same object.
                     actual.ConnectionInfo.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ConnectionInfo);
                 }
+
+                if (systemUnderTest.RefreshToken == null)
+                {
+                    actual.RefreshToken.AsTest().Must().BeNull();
+                }
+                else if (!actual.RefreshToken.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.RefreshToken.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RefreshToken);
+                }
             }
 
             [Fact]
@@ -451,7 +529,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "ConnectionInfo" };
+                var propertyNames = new string[] { "ConnectionInfo", "RefreshToken" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -464,12 +542,12 @@ namespace Naos.Auth.Domain.Test
                     }
 
                     // Act
-                    var actual = (GetOAuth2InitiationOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (RefreshOAuth2TokenPairOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach (var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(GetOAuth2InitiationOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(RefreshOAuth2TokenPairOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -531,7 +609,7 @@ namespace Naos.Auth.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetOAuth2InitiationOp>();
+                var expected = A.Dummy<RefreshOAuth2TokenPairOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -560,7 +638,7 @@ namespace Naos.Auth.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetOAuth2InitiationOp>();
+                var expected = A.Dummy<RefreshOAuth2TokenPairOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -589,7 +667,7 @@ namespace Naos.Auth.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetOAuth2InitiationOp>();
+                var expected = A.Dummy<RefreshOAuth2TokenPairOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -618,7 +696,7 @@ namespace Naos.Auth.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetOAuth2InitiationOp>();
+                var expected = A.Dummy<RefreshOAuth2TokenPairOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -652,8 +730,8 @@ namespace Naos.Auth.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                GetOAuth2InitiationOp systemUnderTest1 = null;
-                GetOAuth2InitiationOp systemUnderTest2 = null;
+                RefreshOAuth2TokenPairOp systemUnderTest1 = null;
+                RefreshOAuth2TokenPairOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -683,7 +761,7 @@ namespace Naos.Auth.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetOAuth2InitiationOp systemUnderTest = null;
+                    RefreshOAuth2TokenPairOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -832,8 +910,8 @@ namespace Naos.Auth.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                GetOAuth2InitiationOp systemUnderTest1 = null;
-                GetOAuth2InitiationOp systemUnderTest2 = null;
+                RefreshOAuth2TokenPairOp systemUnderTest1 = null;
+                RefreshOAuth2TokenPairOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -863,7 +941,7 @@ namespace Naos.Auth.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetOAuth2InitiationOp systemUnderTest = null;
+                    RefreshOAuth2TokenPairOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1152,17 +1230,17 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_OAuth2Initiation___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_ReturningOperationBase_of_OAuth2TokenPair___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    ReturningOperationBase<OAuth2Initiation> systemUnderTest = null;
+                    ReturningOperationBase<OAuth2TokenPair> systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2Initiation>)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2TokenPair>)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1183,14 +1261,14 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_OAuth2Initiation___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_ReturningOperationBase_of_OAuth2TokenPair___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2Initiation>)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2TokenPair>)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1211,14 +1289,14 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_OAuth2Initiation___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_ReturningOperationBase_of_OAuth2TokenPair___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2Initiation>)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2TokenPair>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1239,14 +1317,14 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_OAuth2Initiation___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_ReturningOperationBase_of_OAuth2TokenPair___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2Initiation>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2TokenPair>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1267,14 +1345,14 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_OAuth2Initiation___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_ReturningOperationBase_of_OAuth2TokenPair___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2Initiation>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2TokenPair>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1295,14 +1373,14 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetOAuth2InitiationOp___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_RefreshOAuth2TokenPairOp___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetOAuth2InitiationOp systemUnderTest = null;
+                    RefreshOAuth2TokenPairOp systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1326,7 +1404,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetOAuth2InitiationOp___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_RefreshOAuth2TokenPairOp___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1354,7 +1432,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetOAuth2InitiationOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_RefreshOAuth2TokenPairOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1382,7 +1460,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetOAuth2InitiationOp___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_RefreshOAuth2TokenPairOp___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1410,7 +1488,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetOAuth2InitiationOp___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_RefreshOAuth2TokenPairOp___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
