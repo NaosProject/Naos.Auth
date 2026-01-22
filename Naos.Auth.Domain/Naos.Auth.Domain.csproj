@@ -125,12 +125,12 @@
       <DependentUpon>TokenInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Enums\TokenAuthorizationState.cs" />
-    <Compile Include="Operations\RevokeOAuth2TokenOp.cs" />
-    <Compile Include="Operations\RefreshOAuth2TokenPairOp.cs" />
-    <Compile Include="Operations\GetOAuth2InitiationOp.cs" />
     <Compile Include="Operations\GetOAuth2InitiationOp.designer.cs">
       <DependentUpon>GetOAuth2InitiationOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\RevokeOAuth2TokenOp.cs" />
+    <Compile Include="Operations\RefreshOAuth2TokenPairOp.cs" />
+    <Compile Include="Operations\GetOAuth2InitiationOp.cs" />
     <Compile Include="Operations\RefreshOAuth2TokenPairOp.designer.cs">
       <DependentUpon>RefreshOAuth2TokenPairOp.cs</DependentUpon>
     </Compile>

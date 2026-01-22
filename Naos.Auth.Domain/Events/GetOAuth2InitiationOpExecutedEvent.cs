@@ -20,12 +20,21 @@ namespace Naos.Auth.Domain
         /// </summary>
         /// <param name="id">The unique identifier for the authorization request.  Likely <see cref="OAuth2Initiation.State"/>.</param>
         /// <param name="timestampUtc">The UTC timestamp.</param>
+        /// <param name="context">The context data from the executed <see cref="GetOAuth2InitiationOp"/>.</param>
         public GetOAuth2InitiationOpExecutedEvent(
             string id,
-            DateTime timestampUtc)
+            DateTime timestampUtc,
+            string context)
             : base(id, timestampUtc)
         {
             new { id }.AsArg().Must().NotBeNullNorWhiteSpace();
+
+            this.Context = context;
         }
+
+        /// <summary>
+        /// Gets the context data from the executed <see cref="GetOAuth2InitiationOp"/>.
+        /// </summary>
+        public string Context { get; private set; }
     }
 }

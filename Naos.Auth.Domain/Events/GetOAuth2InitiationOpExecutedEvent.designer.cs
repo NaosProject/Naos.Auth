@@ -70,7 +70,8 @@ namespace Naos.Auth.Domain
             }
 
             var result = this.TimestampUtc.IsEqualTo(other.TimestampUtc)
-                      && this.Id.IsEqualTo(other.Id, StringComparer.Ordinal);
+                      && this.Id.IsEqualTo(other.Id, StringComparer.Ordinal)
+                      && this.Context.IsEqualTo(other.Context, StringComparer.Ordinal);
 
             return result;
         }
@@ -82,6 +83,7 @@ namespace Naos.Auth.Domain
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.TimestampUtc)
             .Hash(this.Id)
+            .Hash(this.Context)
             .Value;
 
         /// <inheritdoc />
@@ -109,7 +111,8 @@ namespace Naos.Auth.Domain
         {
             var result = new GetOAuth2InitiationOpExecutedEvent(
                                  this.Id?.DeepClone(),
-                                 timestampUtc);
+                                 timestampUtc,
+                                 this.Context?.DeepClone());
 
             return result;
         }
@@ -136,7 +139,40 @@ namespace Naos.Auth.Domain
         {
             var result = new GetOAuth2InitiationOpExecutedEvent(
                                  id,
-                                 this.TimestampUtc.DeepClone());
+                                 this.TimestampUtc.DeepClone(),
+                                 this.Context?.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="Context" />.
+        /// </summary>
+        /// <param name="context">The new <see cref="Context" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="GetOAuth2InitiationOpExecutedEvent" /> using the specified <paramref name="context" /> for <see cref="Context" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public GetOAuth2InitiationOpExecutedEvent DeepCloneWithContext(string context)
+        {
+            var result = new GetOAuth2InitiationOpExecutedEvent(
+                                 this.Id?.DeepClone(),
+                                 this.TimestampUtc.DeepClone(),
+                                 context);
 
             return result;
         }
@@ -147,7 +183,8 @@ namespace Naos.Auth.Domain
         {
             var result = new GetOAuth2InitiationOpExecutedEvent(
                                  this.Id?.DeepClone(),
-                                 this.TimestampUtc.DeepClone());
+                                 this.TimestampUtc.DeepClone(),
+                                 this.Context?.DeepClone());
 
             return result;
         }
@@ -156,7 +193,7 @@ namespace Naos.Auth.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Auth.Domain.GetOAuth2InitiationOpExecutedEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {this.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Auth.Domain.GetOAuth2InitiationOpExecutedEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {this.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Context = {this.Context?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }
@@ -210,6 +247,13 @@ namespace Naos.Auth.Domain
                 }
 
                 localValidationFailures = ValidatableExtensions.GetValidationFailures(this.Id, options, propertyPathTracker, nameof(this.Id));
+                result.AddRange(localValidationFailures);
+                if (stopOnFirstObjectWithFailures && result.Any())
+                {
+                    return;
+                }
+
+                localValidationFailures = ValidatableExtensions.GetValidationFailures(this.Context, options, propertyPathTracker, nameof(this.Context));
                 result.AddRange(localValidationFailures);
                 if (stopOnFirstObjectWithFailures && result.Any())
                 {

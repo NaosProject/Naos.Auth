@@ -48,7 +48,7 @@ namespace Naos.Auth.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetOAuth2InitiationOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Auth.Domain.GetOAuth2InitiationOp: ConnectionInfo = {systemUnderTest.ConnectionInfo?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Auth.Domain.GetOAuth2InitiationOp: ConnectionInfo = {systemUnderTest.ConnectionInfo?.ToString() ?? "<null>"}, Context = {systemUnderTest.Context?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -62,8 +62,11 @@ namespace Naos.Auth.Domain.Test
                     Name = "constructor should throw ArgumentNullException when parameter 'connectionInfo' is null scenario",
                     ConstructionFunc = () =>
                     {
+                        var referenceObject = A.Dummy<GetOAuth2InitiationOp>();
+
                         var result = new GetOAuth2InitiationOp(
-                                             null);
+                                             null,
+                                             referenceObject.Context);
 
                         return result;
                     },
@@ -83,13 +86,34 @@ namespace Naos.Auth.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetOAuth2InitiationOp>
                         {
                             SystemUnderTest = new GetOAuth2InitiationOp(
-                                                      referenceObject.ConnectionInfo),
+                                                      referenceObject.ConnectionInfo,
+                                                      referenceObject.Context),
                             ExpectedPropertyValue = referenceObject.ConnectionInfo,
                         };
 
                         return result;
                     },
                     PropertyName = "ConnectionInfo",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetOAuth2InitiationOp>
+                {
+                    Name = "Context should return same 'context' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetOAuth2InitiationOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetOAuth2InitiationOp>
+                        {
+                            SystemUnderTest = new GetOAuth2InitiationOp(
+                                                      referenceObject.ConnectionInfo,
+                                                      referenceObject.Context),
+                            ExpectedPropertyValue = referenceObject.Context,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Context",
                 });
 
         private static readonly DeepCloneWithTestScenarios<GetOAuth2InitiationOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetOAuth2InitiationOp>()
@@ -112,6 +136,26 @@ namespace Naos.Auth.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetOAuth2InitiationOp>
+                {
+                    Name = "DeepCloneWithContext should deep clone object and replace Context with the provided context",
+                    WithPropertyName = "Context",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetOAuth2InitiationOp>();
+
+                        var referenceObject = A.Dummy<GetOAuth2InitiationOp>().ThatIs(_ => !systemUnderTest.Context.IsEqualTo(_.Context));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetOAuth2InitiationOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Context,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly GetOAuth2InitiationOp ReferenceObjectForEquatableTestScenarios = A.Dummy<GetOAuth2InitiationOp>();
@@ -125,12 +169,17 @@ namespace Naos.Auth.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetOAuth2InitiationOp[]
                     {
                         new GetOAuth2InitiationOp(
-                                ReferenceObjectForEquatableTestScenarios.ConnectionInfo),
+                                ReferenceObjectForEquatableTestScenarios.ConnectionInfo,
+                                ReferenceObjectForEquatableTestScenarios.Context),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetOAuth2InitiationOp[]
                     {
                         new GetOAuth2InitiationOp(
-                                A.Dummy<GetOAuth2InitiationOp>().Whose(_ => !_.ConnectionInfo.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ConnectionInfo)).ConnectionInfo),
+                                A.Dummy<GetOAuth2InitiationOp>().Whose(_ => !_.ConnectionInfo.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ConnectionInfo)).ConnectionInfo,
+                                ReferenceObjectForEquatableTestScenarios.Context),
+                        new GetOAuth2InitiationOp(
+                                ReferenceObjectForEquatableTestScenarios.ConnectionInfo,
+                                A.Dummy<GetOAuth2InitiationOp>().Whose(_ => !_.Context.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Context)).Context),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -451,7 +500,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "ConnectionInfo" };
+                var propertyNames = new string[] { "ConnectionInfo", "Context" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

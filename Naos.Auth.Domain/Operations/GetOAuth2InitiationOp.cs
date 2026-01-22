@@ -18,17 +18,33 @@ namespace Naos.Auth.Domain
         /// Initializes a new instance of the <see cref="GetOAuth2InitiationOp"/> class.
         /// </summary>
         /// <param name="connectionInfo">Information required to establish an OAuth 2.0 connection with a provider.</param>
+        /// <param name="context">
+        /// OPTIONAL context data.  The protocol that executes this operation can choose to persist the context
+        /// alongside the generated state to get that context back when the authorization flow is completed.
+        /// DEFAULT is no context.
+        /// </param>
         public GetOAuth2InitiationOp(
-            OAuth2ConnectionInfo connectionInfo)
+            OAuth2ConnectionInfo connectionInfo,
+            string context = null)
         {
             new { connectionInfo }.AsArg().Must().NotBeNull();
 
             this.ConnectionInfo = connectionInfo;
+            this.Context = context;
         }
 
         /// <summary>
         /// Gets information required to establish an OAuth 2.0 connection with a provider.
         /// </summary>
         public OAuth2ConnectionInfo ConnectionInfo { get; private set; }
+
+        /// <summary>
+        /// Gets context data.
+        /// </summary>
+        /// <remarks>
+        /// The protocol that executes this operation can choose to persist the context
+        /// alongside the generated state to get that context back when the authorization flow is completed.
+        /// </remarks>
+        public string Context { get; private set; }
     }
 }

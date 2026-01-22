@@ -38,12 +38,14 @@ namespace Naos.Auth.Domain.Test
         {
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetOAuth2InitiationOp(
-                                 A.Dummy<OAuth2ConnectionInfo>()));
+                                 A.Dummy<OAuth2ConnectionInfo>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetOAuth2InitiationOpExecutedEvent(
                                  A.Dummy<string>(),
-                                 A.Dummy<UtcDateTime>()));
+                                 A.Dummy<UtcDateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new OAuth2ClientCredentials(

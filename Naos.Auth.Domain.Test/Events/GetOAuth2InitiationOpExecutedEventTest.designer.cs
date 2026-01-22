@@ -48,7 +48,7 @@ namespace Naos.Auth.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetOAuth2InitiationOpExecutedEvent>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Auth.Domain.GetOAuth2InitiationOpExecutedEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {systemUnderTest.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Auth.Domain.GetOAuth2InitiationOpExecutedEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {systemUnderTest.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Context = {systemUnderTest.Context?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -66,7 +66,8 @@ namespace Naos.Auth.Domain.Test
 
                         var result = new GetOAuth2InitiationOpExecutedEvent(
                                              null,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.Context);
 
                         return result;
                     },
@@ -83,7 +84,8 @@ namespace Naos.Auth.Domain.Test
 
                         var result = new GetOAuth2InitiationOpExecutedEvent(
                                              Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.Context);
 
                         return result;
                     },
@@ -100,7 +102,8 @@ namespace Naos.Auth.Domain.Test
 
                         var result = new GetOAuth2InitiationOpExecutedEvent(
                                              referenceObject.Id,
-                                             DateTime.Now);
+                                             DateTime.Now,
+                                             referenceObject.Context);
 
                         return result;
                     },
@@ -117,12 +120,49 @@ namespace Naos.Auth.Domain.Test
 
                         var result = new GetOAuth2InitiationOpExecutedEvent(
                                              referenceObject.Id,
-                                             DateTime.UtcNow.ToUnspecified());
+                                             DateTime.UtcNow.ToUnspecified(),
+                                             referenceObject.Context);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "timestampUtc", "Kind that is not DateTimeKind.Utc", "DateTimeKind.Unspecified" },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetOAuth2InitiationOpExecutedEvent>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'context' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetOAuth2InitiationOpExecutedEvent>();
+
+                        var result = new GetOAuth2InitiationOpExecutedEvent(
+                                             referenceObject.Id,
+                                             referenceObject.TimestampUtc,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "context", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetOAuth2InitiationOpExecutedEvent>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'context' is white space scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetOAuth2InitiationOpExecutedEvent>();
+
+                        var result = new GetOAuth2InitiationOpExecutedEvent(
+                                             referenceObject.Id,
+                                             referenceObject.TimestampUtc,
+                                             Invariant($"  {Environment.NewLine}  "));
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "context", "white space", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<GetOAuth2InitiationOpExecutedEvent> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetOAuth2InitiationOpExecutedEvent>()
@@ -138,7 +178,8 @@ namespace Naos.Auth.Domain.Test
                         {
                             SystemUnderTest = new GetOAuth2InitiationOpExecutedEvent(
                                                       referenceObject.Id,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.Context),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
 
@@ -158,13 +199,35 @@ namespace Naos.Auth.Domain.Test
                         {
                             SystemUnderTest = new GetOAuth2InitiationOpExecutedEvent(
                                                       referenceObject.Id,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.Context),
                             ExpectedPropertyValue = referenceObject.TimestampUtc,
                         };
 
                         return result;
                     },
                     PropertyName = "TimestampUtc",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetOAuth2InitiationOpExecutedEvent>
+                {
+                    Name = "Context should return same 'context' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetOAuth2InitiationOpExecutedEvent>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetOAuth2InitiationOpExecutedEvent>
+                        {
+                            SystemUnderTest = new GetOAuth2InitiationOpExecutedEvent(
+                                                      referenceObject.Id,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.Context),
+                            ExpectedPropertyValue = referenceObject.Context,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Context",
                 });
 
         private static readonly DeepCloneWithTestScenarios<GetOAuth2InitiationOpExecutedEvent> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetOAuth2InitiationOpExecutedEvent>()
@@ -207,6 +270,26 @@ namespace Naos.Auth.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetOAuth2InitiationOpExecutedEvent>
+                {
+                    Name = "DeepCloneWithContext should deep clone object and replace Context with the provided context",
+                    WithPropertyName = "Context",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetOAuth2InitiationOpExecutedEvent>();
+
+                        var referenceObject = A.Dummy<GetOAuth2InitiationOpExecutedEvent>().ThatIs(_ => !systemUnderTest.Context.IsEqualTo(_.Context));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetOAuth2InitiationOpExecutedEvent>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Context,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly GetOAuth2InitiationOpExecutedEvent ReferenceObjectForEquatableTestScenarios = A.Dummy<GetOAuth2InitiationOpExecutedEvent>();
@@ -221,16 +304,23 @@ namespace Naos.Auth.Domain.Test
                     {
                         new GetOAuth2InitiationOpExecutedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.Context),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetOAuth2InitiationOpExecutedEvent[]
                     {
                         new GetOAuth2InitiationOpExecutedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
-                                A.Dummy<GetOAuth2InitiationOpExecutedEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
+                                A.Dummy<GetOAuth2InitiationOpExecutedEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.Context),
                         new GetOAuth2InitiationOpExecutedEvent(
                                 A.Dummy<GetOAuth2InitiationOpExecutedEvent>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.Context),
+                        new GetOAuth2InitiationOpExecutedEvent(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                A.Dummy<GetOAuth2InitiationOpExecutedEvent>().Whose(_ => !_.Context.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Context)).Context),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -537,7 +627,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "TimestampUtc", "Id" };
+                var propertyNames = new string[] { "TimestampUtc", "Id", "Context" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
