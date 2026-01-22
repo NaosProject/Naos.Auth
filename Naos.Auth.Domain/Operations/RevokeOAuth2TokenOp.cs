@@ -41,7 +41,7 @@ namespace Naos.Auth.Domain
         public OAuth2ConnectionInfo ConnectionInfo { get; private set; }
 
         /// <summary>
-        /// Gets the refresh token to use.
+        /// Gets the token to revoke.
         /// </summary>
         public TokenInfo Token { get; private set; }
     }
