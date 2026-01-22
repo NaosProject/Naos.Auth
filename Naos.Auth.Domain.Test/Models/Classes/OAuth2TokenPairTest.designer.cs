@@ -34,103 +34,169 @@ namespace Naos.Auth.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class GetOAuth2InitiationOpTest
+    public static partial class OAuth2TokenPairTest
     {
-        private static readonly StringRepresentationTestScenarios<GetOAuth2InitiationOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly StringRepresentationTestScenarios<OAuth2TokenPair> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<OAuth2TokenPair>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<GetOAuth2InitiationOp>
+                new StringRepresentationTestScenario<OAuth2TokenPair>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetOAuth2InitiationOp>();
+                        var systemUnderTest = A.Dummy<OAuth2TokenPair>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<GetOAuth2InitiationOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<OAuth2TokenPair>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Auth.Domain.GetOAuth2InitiationOp: ConnectionInfo = {systemUnderTest.ConnectionInfo?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Auth.Domain.OAuth2TokenPair: RefreshToken = {systemUnderTest.RefreshToken?.ToString() ?? "<null>"}, AccessToken = {systemUnderTest.AccessToken?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<GetOAuth2InitiationOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<OAuth2TokenPair> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<OAuth2TokenPair>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetOAuth2InitiationOp>
+                new ConstructorArgumentValidationTestScenario<OAuth2TokenPair>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'connectionInfo' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'refreshToken' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var result = new GetOAuth2InitiationOp(
+                        var referenceObject = A.Dummy<OAuth2TokenPair>();
+
+                        var result = new OAuth2TokenPair(
+                                             null,
+                                             referenceObject.AccessToken);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "refreshToken", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<OAuth2TokenPair>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'accessToken' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<OAuth2TokenPair>();
+
+                        var result = new OAuth2TokenPair(
+                                             referenceObject.RefreshToken,
                                              null);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "connectionInfo", },
+                    ExpectedExceptionMessageContains = new[] { "accessToken", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<GetOAuth2InitiationOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<OAuth2TokenPair> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<OAuth2TokenPair>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetOAuth2InitiationOp>
+                new ConstructorPropertyAssignmentTestScenario<OAuth2TokenPair>
                 {
-                    Name = "ConnectionInfo should return same 'connectionInfo' parameter passed to constructor when getting",
+                    Name = "RefreshToken should return same 'refreshToken' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<GetOAuth2InitiationOp>();
+                        var referenceObject = A.Dummy<OAuth2TokenPair>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<GetOAuth2InitiationOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<OAuth2TokenPair>
                         {
-                            SystemUnderTest = new GetOAuth2InitiationOp(
-                                                      referenceObject.ConnectionInfo),
-                            ExpectedPropertyValue = referenceObject.ConnectionInfo,
+                            SystemUnderTest = new OAuth2TokenPair(
+                                                      referenceObject.RefreshToken,
+                                                      referenceObject.AccessToken),
+                            ExpectedPropertyValue = referenceObject.RefreshToken,
                         };
 
                         return result;
                     },
-                    PropertyName = "ConnectionInfo",
+                    PropertyName = "RefreshToken",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<OAuth2TokenPair>
+                {
+                    Name = "AccessToken should return same 'accessToken' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<OAuth2TokenPair>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<OAuth2TokenPair>
+                        {
+                            SystemUnderTest = new OAuth2TokenPair(
+                                                      referenceObject.RefreshToken,
+                                                      referenceObject.AccessToken),
+                            ExpectedPropertyValue = referenceObject.AccessToken,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "AccessToken",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<GetOAuth2InitiationOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly DeepCloneWithTestScenarios<OAuth2TokenPair> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<OAuth2TokenPair>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetOAuth2InitiationOp>
+                new DeepCloneWithTestScenario<OAuth2TokenPair>
                 {
-                    Name = "DeepCloneWithConnectionInfo should deep clone object and replace ConnectionInfo with the provided connectionInfo",
-                    WithPropertyName = "ConnectionInfo",
+                    Name = "DeepCloneWithRefreshToken should deep clone object and replace RefreshToken with the provided refreshToken",
+                    WithPropertyName = "RefreshToken",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetOAuth2InitiationOp>();
+                        var systemUnderTest = A.Dummy<OAuth2TokenPair>();
 
-                        var referenceObject = A.Dummy<GetOAuth2InitiationOp>().ThatIs(_ => !systemUnderTest.ConnectionInfo.IsEqualTo(_.ConnectionInfo));
+                        var referenceObject = A.Dummy<OAuth2TokenPair>().ThatIs(_ => !systemUnderTest.RefreshToken.IsEqualTo(_.RefreshToken));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<GetOAuth2InitiationOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<OAuth2TokenPair>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.ConnectionInfo,
+                            DeepCloneWithValue = referenceObject.RefreshToken,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<OAuth2TokenPair>
+                {
+                    Name = "DeepCloneWithAccessToken should deep clone object and replace AccessToken with the provided accessToken",
+                    WithPropertyName = "AccessToken",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<OAuth2TokenPair>();
+
+                        var referenceObject = A.Dummy<OAuth2TokenPair>().ThatIs(_ => !systemUnderTest.AccessToken.IsEqualTo(_.AccessToken));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<OAuth2TokenPair>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.AccessToken,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly GetOAuth2InitiationOp ReferenceObjectForEquatableTestScenarios = A.Dummy<GetOAuth2InitiationOp>();
+        private static readonly OAuth2TokenPair ReferenceObjectForEquatableTestScenarios = A.Dummy<OAuth2TokenPair>();
 
-        private static readonly EquatableTestScenarios<GetOAuth2InitiationOp> EquatableTestScenarios = new EquatableTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly EquatableTestScenarios<OAuth2TokenPair> EquatableTestScenarios = new EquatableTestScenarios<OAuth2TokenPair>()
             .AddScenario(() =>
-                new EquatableTestScenario<GetOAuth2InitiationOp>
+                new EquatableTestScenario<OAuth2TokenPair>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetOAuth2InitiationOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new OAuth2TokenPair[]
                     {
-                        new GetOAuth2InitiationOp(
-                                ReferenceObjectForEquatableTestScenarios.ConnectionInfo),
+                        new OAuth2TokenPair(
+                                ReferenceObjectForEquatableTestScenarios.RefreshToken,
+                                ReferenceObjectForEquatableTestScenarios.AccessToken),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new GetOAuth2InitiationOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new OAuth2TokenPair[]
                     {
-                        new GetOAuth2InitiationOp(
-                                A.Dummy<GetOAuth2InitiationOp>().Whose(_ => !_.ConnectionInfo.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ConnectionInfo)).ConnectionInfo),
+                        new OAuth2TokenPair(
+                                A.Dummy<OAuth2TokenPair>().Whose(_ => !_.RefreshToken.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RefreshToken)).RefreshToken,
+                                ReferenceObjectForEquatableTestScenarios.AccessToken),
+                        new OAuth2TokenPair(
+                                ReferenceObjectForEquatableTestScenarios.RefreshToken,
+                                A.Dummy<OAuth2TokenPair>().Whose(_ => !_.AccessToken.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AccessToken)).AccessToken),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -139,16 +205,15 @@ namespace Naos.Auth.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<RefreshOAuth2TokenPairOp>(),
                     },
                 });
 
-        private static readonly ValidModelTestScenarios<GetOAuth2InitiationOp> ValidModelTestScenarios = new ValidModelTestScenarios<GetOAuth2InitiationOp>()
+        private static readonly ValidModelTestScenarios<OAuth2TokenPair> ValidModelTestScenarios = new ValidModelTestScenarios<OAuth2TokenPair>()
             .AddScenario(() =>
-                new ValidModelTestScenario<GetOAuth2InitiationOp>
+                new ValidModelTestScenario<OAuth2TokenPair>
                 {
-                    Name = "a dummy GetOAuth2InitiationOp should be valid",
-                    SystemUnderTest = A.Dummy<GetOAuth2InitiationOp>(),
+                    Name = "a dummy OAuth2TokenPair should be valid",
+                    SystemUnderTest = A.Dummy<OAuth2TokenPair>(),
                 });
 
         [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
@@ -169,12 +234,12 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void GetOAuth2InitiationOp___Should_implement_IModel_of_GetOAuth2InitiationOp___When_reflecting()
+            public static void OAuth2TokenPair___Should_implement_IModel_of_OAuth2TokenPair___When_reflecting()
             {
                 // Arrange
-                var type = typeof(GetOAuth2InitiationOp);
+                var type = typeof(OAuth2TokenPair);
 
-                var expectedModelMethods = typeof(IModel<GetOAuth2InitiationOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<OAuth2TokenPair>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -184,7 +249,7 @@ namespace Naos.Auth.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetOAuth2InitiationOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<OAuth2TokenPair>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -202,10 +267,10 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void GetOAuth2InitiationOp___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void OAuth2TokenPair___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(GetOAuth2InitiationOp);
+                var type = typeof(OAuth2TokenPair);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -385,10 +450,10 @@ namespace Naos.Auth.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<GetOAuth2InitiationOp>();
+                var systemUnderTest = A.Dummy<OAuth2TokenPair>();
 
                 // Act
-                var actual = (GetOAuth2InitiationOp)systemUnderTest.Clone();
+                var actual = (OAuth2TokenPair)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -412,7 +477,7 @@ namespace Naos.Auth.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<GetOAuth2InitiationOp>();
+                var systemUnderTest = A.Dummy<OAuth2TokenPair>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -421,16 +486,28 @@ namespace Naos.Auth.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.ConnectionInfo == null)
+                if (systemUnderTest.RefreshToken == null)
                 {
-                    actual.ConnectionInfo.AsTest().Must().BeNull();
+                    actual.RefreshToken.AsTest().Must().BeNull();
                 }
-                else if (!actual.ConnectionInfo.GetType().IsValueType)
+                else if (!actual.RefreshToken.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.ConnectionInfo.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ConnectionInfo);
+                    actual.RefreshToken.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RefreshToken);
+                }
+
+                if (systemUnderTest.AccessToken == null)
+                {
+                    actual.AccessToken.AsTest().Must().BeNull();
+                }
+                else if (!actual.AccessToken.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.AccessToken.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.AccessToken);
                 }
             }
 
@@ -450,7 +527,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "ConnectionInfo" };
+                var propertyNames = new string[] { "RefreshToken", "AccessToken" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -463,12 +540,12 @@ namespace Naos.Auth.Domain.Test
                     }
 
                     // Act
-                    var actual = (GetOAuth2InitiationOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (OAuth2TokenPair)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach (var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(GetOAuth2InitiationOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(OAuth2TokenPair).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -530,7 +607,7 @@ namespace Naos.Auth.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetOAuth2InitiationOp>();
+                var expected = A.Dummy<OAuth2TokenPair>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -559,7 +636,7 @@ namespace Naos.Auth.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetOAuth2InitiationOp>();
+                var expected = A.Dummy<OAuth2TokenPair>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -588,7 +665,7 @@ namespace Naos.Auth.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetOAuth2InitiationOp>();
+                var expected = A.Dummy<OAuth2TokenPair>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -617,7 +694,7 @@ namespace Naos.Auth.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetOAuth2InitiationOp>();
+                var expected = A.Dummy<OAuth2TokenPair>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -651,8 +728,8 @@ namespace Naos.Auth.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                GetOAuth2InitiationOp systemUnderTest1 = null;
-                GetOAuth2InitiationOp systemUnderTest2 = null;
+                OAuth2TokenPair systemUnderTest1 = null;
+                OAuth2TokenPair systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -682,7 +759,7 @@ namespace Naos.Auth.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetOAuth2InitiationOp systemUnderTest = null;
+                    OAuth2TokenPair systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -831,8 +908,8 @@ namespace Naos.Auth.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                GetOAuth2InitiationOp systemUnderTest1 = null;
-                GetOAuth2InitiationOp systemUnderTest2 = null;
+                OAuth2TokenPair systemUnderTest1 = null;
+                OAuth2TokenPair systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -862,7 +939,7 @@ namespace Naos.Auth.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetOAuth2InitiationOp systemUnderTest = null;
+                    OAuth2TokenPair systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1008,300 +1085,14 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_OAuth2TokenPair___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    OperationBase systemUnderTest = null;
-
-                    // Act
-                    var actual = scenario.ReferenceObject.Equals((OperationBase)systemUnderTest);
-
-                    // Assert
-                    actual.AsTest().Must().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_true___When_parameter_other_is_same_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((OperationBase)scenario.ReferenceObject);
-
-                    // Assert
-                    actual.AsTest().Must().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_OAuth2Initiation___Should_return_false___When_parameter_other_is_null()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    ReturningOperationBase<OAuth2Initiation> systemUnderTest = null;
-
-                    // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2Initiation>)systemUnderTest);
-
-                    // Assert
-                    actual.AsTest().Must().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_OAuth2Initiation___Should_return_true___When_parameter_other_is_same_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2Initiation>)scenario.ReferenceObject);
-
-                    // Assert
-                    actual.AsTest().Must().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_OAuth2Initiation___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2Initiation>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_OAuth2Initiation___Should_return_false___When_objects_being_compared_have_different_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2Initiation>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_OAuth2Initiation___Should_return_true___When_objects_being_compared_have_same_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<OAuth2Initiation>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetOAuth2InitiationOp___Should_return_false___When_parameter_other_is_null()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    GetOAuth2InitiationOp systemUnderTest = null;
+                    OAuth2TokenPair systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1325,7 +1116,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetOAuth2InitiationOp___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_OAuth2TokenPair___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1353,7 +1144,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetOAuth2InitiationOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_OAuth2TokenPair___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1381,7 +1172,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetOAuth2InitiationOp___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_OAuth2TokenPair___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1409,7 +1200,7 @@ namespace Naos.Auth.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetOAuth2InitiationOp___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_OAuth2TokenPair___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

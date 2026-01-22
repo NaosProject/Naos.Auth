@@ -62,6 +62,16 @@ namespace Naos.Auth.Domain.Test
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new OAuth2TokenPair(
+                                 A.Dummy<TokenInfo>(),
+                                 A.Dummy<TokenInfo>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RefreshOAuth2TokenPairOp(
+                                 A.Dummy<OAuth2ConnectionInfo>(),
+                                 A.Dummy<TokenInfo>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new TokenInfo(
                                  A.Dummy<string>(),
                                  A.Dummy<UtcDateTimeRangeInclusive>()));
