@@ -104,6 +104,10 @@
     <Compile Include="Events\GetOAuth2InitiationOpExecutedEvent.designer.cs">
       <DependentUpon>GetOAuth2InitiationOpExecutedEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\ApiKey.cs" />
+    <Compile Include="Models\Classes\ApiKey.designer.cs">
+      <DependentUpon>ApiKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Classes\OAuth2ConnectionInfo.cs" />
     <Compile Include="Models\Classes\OAuth2ConnectionInfo.designer.cs">
       <DependentUpon>OAuth2ConnectionInfo.cs</DependentUpon>

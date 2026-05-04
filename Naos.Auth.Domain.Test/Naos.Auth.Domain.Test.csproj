@@ -263,6 +263,10 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
+    <Compile Include="Models\Classes\ApiKeyTest.cs" />
+    <Compile Include="Models\Classes\ApiKeyTest.designer.cs">
+      <DependentUpon>ApiKeyTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="AuthDummyFactoryTest.designer.cs">
       <DependentUpon>AuthDummyFactoryTest.cs</DependentUpon>
     </Compile>
