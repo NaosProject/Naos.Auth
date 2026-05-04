@@ -6,9 +6,9 @@
     <tags>dummyfactory dummy factory fakeiteasy autofixture snippet codeinclude utility shared recipe Auth</tags>
     <dependencies>
       <dependency id="Naos.Auth.Domain" version="$version$" />
-      <dependency id="OBeautifulCode.AutoFakeItEasy" version="1.0.141" />
+      <dependency id="OBeautifulCode.AutoFakeItEasy" version="1.0.143" />
       <dependency id="Naos.CodeAnalysis.Recipes.SuppressBecause" version="1.0.130" />
-      <dependency id="OBeautifulCode.Type.Recipes.DummyFactory" version="1.0.153" />
+      <dependency id="OBeautifulCode.Type.Recipes.DummyFactory" version="1.0.158" />
     </dependencies>
   </metadata>
   <files>
